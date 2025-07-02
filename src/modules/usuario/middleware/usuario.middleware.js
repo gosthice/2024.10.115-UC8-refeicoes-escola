@@ -1,0 +1,27 @@
+const jwt = require('jsonwebtoken');
+
+class AuthMiddleware {
+   static autenticarToken(req, res, next) {
+      const authHeader = req.headers["authorization"];
+      const token = authHeader && authHeader.split(" ")[1];
+
+      if (!token) {
+         return res.status(401).json({
+            msg: "Token de acesso não fornecido."
+         })
+      };
+
+      jwt.verify(token, process.env.SECRET_KEY, (error, user) => {
+         if (error) {
+            return res.status(403).json({
+               msg: "Token de acesso não fornecido."
+            })
+         };
+
+         req.user = user;
+         next();
+      });
+   }
+}
+
+module.exports = AuthMiddleware;
