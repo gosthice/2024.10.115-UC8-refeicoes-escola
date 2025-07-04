@@ -3,11 +3,12 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const { sequelize } = require('./src/config/configDB');
 const userRoute = require('./src/modules/usuario/routes/usuario.route');
-const authRoute = require('./src/modules/autenticacao/')
+const authRoute = require('./src/modules/autenticacao/routes/autenticacao.route')
 
 dotenv.config();
 
 const app = express();
+
 app.use(cors({
    origin: 'http://localhost:3891',
    credentials: true
@@ -15,9 +16,9 @@ app.use(cors({
 
 app.use(express.json());
 
-app.use('/api/', )
+app.use('/api/', userRoute)
+app.use('/api/', authRoute)
 
-app.use('/api/', )
 const PORTA = process.env.PORTA;
 app.listen(PORTA, async () => {
    try {

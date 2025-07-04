@@ -1,14 +1,14 @@
 const Usuario = require('../../usuario/models/usuario.model');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt'); // removido o js no final
 
 class UsuarioController {
    static async cadastrar(req, res) {
       try {
-         const { id, nome, email, senha } = req.body;
+         const { nome, email, senha } = req.body;
          
-         if (!id || !nome || !email || !senha) {
+         if (!nome || !email || !senha) {
             return res.status(400).json({
-               msg: "Todos os campos devem ser preenchidos"
+               msg: "Todos os campos devem ser preenchidos", err: error.message
             })
          };
 
@@ -23,10 +23,10 @@ class UsuarioController {
 
    static async perfil(req, res) {
       try {
-         const { id } = req.user;
+         const { email } = req.user;
          const user = await Usuario.findOne({
-            where: {id},
-            attributes: ['id', 'nome', 'email']
+            where: {email},
+            attributes: ['nome', 'email']
          });
 
          if (!user) {

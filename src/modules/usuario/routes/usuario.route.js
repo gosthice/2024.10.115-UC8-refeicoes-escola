@@ -7,3 +7,5 @@ const router = express.Router();
 router.post('/cadastrar', UsuarioController.cadastrar);
 
 router.get('/perfil', AuthMiddleware.autenticarToken, UsuarioController.perfil);
+
+module.exports = router;

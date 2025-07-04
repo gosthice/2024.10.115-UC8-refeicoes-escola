@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 dotenv.config();
 const Usuario = require("../../usuario/models/usuario.model");
@@ -23,25 +23,25 @@ class AutenticacaoController {
 
    static async login(req, res) {
       try {
-         const { id, senha } = req.body;
-         if (!id || !senha) {
-            return res
-               .status(400)
-               .json({ msg: "É necessario informar o id e a senha para login" });
+         const { email, senha } = req.body;
+         if (!email || !senha) {
+            return res.status(400).json({ 
+               msg: "É necessario informar o email e a senha para login"
+            });
          }
-         const usuario = await Usuario.findOne({
-            where: { id },
+         const user = await Usuario.findOne({
+            where: { email },
          });
-         if (!usuario) {
+         if (!user) {
             return res.status(401).json({ msg: "Usuario não encontrado!" });
          }
-         const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
+         const senhaCorreta = await bcrypt.compare(senha, user.senha);
          if (!senhaCorreta) {
             return res.status(400).json({ msg: "E-mail ou senha incorreto!" });
          }
          const dadosUsuario = {
-            nome: usuario.nome,
-            id: usuario.id,
+            nome: user.nome, 
+            email: user.email,
             papel: "usuario",
          };
          // gerando os tokens
@@ -57,7 +57,7 @@ class AutenticacaoController {
          res.status(200).json({
             msg: "Usuario logado com sucesso",
             tokenAcesso,
-            nome: usuario.nome,
+            nome: user.nome,
             papel: "usuario",
          });
       } catch (error) {
@@ -68,7 +68,6 @@ class AutenticacaoController {
       }
    }
 
-   // ======= CONTINUAR MODIFICANDO DAQUI PARA BAIXO ====================
    // Método para renovar o refresh token
    static refreshToken(req, res) {
       // busca o refreshToken na req
@@ -79,17 +78,17 @@ class AutenticacaoController {
       jwt.verify(
          refreshToken,
          process.env.JWT_REFRESH_SECRET,
-         (erro, usuario) => {
+         (erro, user) => {
             if (erro) {
                return res.status(403).json({ msg: "Refresh Token invalido!" });
             }
-            const dadosAluno = {
-               nome: usuario.nome,
-               matricula: usuario.matricula,
-               papel: "aluno",
+            const dadosUsuario = {
+               nome: user.nome,
+               email: user.email,
+               papel: "usuario",
             };
             // gerando o novo token
-            const novoTokenAcesso = this.gerarTokenAcesso(dadosAluno);
+            const novoTokenAcesso = this.gerarTokenAcesso(dadosUsuario);
             // atualizando o token antigo para o novo
             res.status(200).json({ tokenAcesso: novoTokenAcesso });
          }
