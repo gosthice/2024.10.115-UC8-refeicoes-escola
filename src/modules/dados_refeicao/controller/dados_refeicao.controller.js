@@ -75,13 +75,14 @@ class DadosRefeicaoController {
                     cardapio: cardapio,
                     responsavel: responsavel
                 },
-                { where: { id: id }}
+                { where: { id: id }, returning: true}
             );
 
-            if (refeicaoAtualizada.length === 0) {
+            if (!refeicaoAtualizada) {
                 return res.status(404).json({ msg: "Nenhum dado atualizado encontrada. Tente novamnte!" })
-            }0    
-            res.status(200).json({ refeicaoAtualizada })
+            };
+
+            res.status(200).json({ refeicaoAtualizada: refeicaoAtualizada })
         } catch (error) {
             res.status(500).json({msg: 'Erro do servidor. Tente novamente mais tarde!'})
         }
@@ -90,7 +91,7 @@ class DadosRefeicaoController {
     static async deletarPorId(req, res) {
         try {
             const id = req.params.id;
-            const refeicaoDeletar = await DadosRefeicao.findByPk({id});
+            const refeicaoDeletar = await DadosRefeicao.findByPk(id);
 
             if (!refeicaoDeletar) {
                 return res.status(404).json({ msg: "Refeiçao nao encontrada." })
