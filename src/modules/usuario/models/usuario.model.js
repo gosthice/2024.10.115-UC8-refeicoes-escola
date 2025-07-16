@@ -8,6 +8,18 @@ const Usuario = sequelize.define(
          type: DataTypes.STRING,
          allowNull: false,
       },
+
+      papel: {
+         type: DataTypes.ENUM('merendeira', 'admin'),
+         allowNull: false,
+         validate: {
+            isIn: {
+               args: [['merendeira', 'admin']],
+               msg: "O papel deve ser merendeira ou admin"
+            }
+         }
+      },
+
       email: {
          type: DataTypes.STRING,
          allowNull: false,
@@ -16,6 +28,7 @@ const Usuario = sequelize.define(
            isEmail: { msg: "Email inválido" },
          },
       },
+      
       senha: {
          type: DataTypes.STRING,
          allowNull: false,

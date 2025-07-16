@@ -4,16 +4,16 @@ const bcrypt = require('bcrypt'); // removido o js no final
 class UsuarioController {
    static async cadastrar(req, res) {
       try {
-         const { nome, email, senha } = req.body;
+         const { nome, email, senha, papel } = req.body;
          
-         if (!nome || !email || !senha) {
+         if (!nome || !email || !senha || !papel) {
             return res.status(400).json({
-               msg: "Todos os campos devem ser preenchidos", err: error.message
+               msg: "Todos os campos devem ser preenchidos"
             })
          };
 
          const senhaCriptografada = await bcrypt.hash(senha, 10);  // criptografar a senha
-         await Usuario.create({ nome, email, senha: senhaCriptografada });
+         await Usuario.create({ nome, papel, email, senha: senhaCriptografada });
 
          res.status(200).json({ msg: "Usuario cadastrado com sucesso!"});
       } catch (error) {
@@ -23,19 +23,19 @@ class UsuarioController {
 
    static async perfil(req, res) {
       try {
-         const { email } = req.user;
-         const user = await Usuario.findOne({
+         const { email } = req.usuario;
+         const Usuario = await Usuario.findOne({
             where: {email},
-            attributes: ['nome', 'email']
+            attributes: ['nome', 'papel', 'email']
          });
 
-         if (!user) {
+         if (!Usuario) {
             return res.status(401).json({
                msg: "Não existe nenhum usuário cadastrado."
             })
          };
 
-         res.status(200).json(user);
+         res.status(200).json(Usuario);
       } catch (error) {
          res.status(500).json({msg: 'Erro do servidor. Tente novamente mais tarde!', erro: error.message})
       }
