@@ -4,9 +4,9 @@ const bcrypt = require('bcrypt'); // removido o js no final
 class UsuarioController {
    static async cadastrar(req, res) {
       try {
-         const { nome, email, senha, papel } = req.body;
+         const { nome, papel, email, senha } = req.body;
          
-         if (!nome || !email || !senha || !papel) {
+         if (!nome || !papel || !email || !senha) {
             return res.status(400).json({
                msg: "Todos os campos devem ser preenchidos"
             })
