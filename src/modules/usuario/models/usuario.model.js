@@ -15,7 +15,7 @@ const Usuario = sequelize.define(
          validate: {
             isIn: {
                args: [['merendeira', 'admin']],
-               msg: "O papel deve ser merendeira ou admin"
+               msg: "O papel deve ser merendeira ou admin."
             }
          }
       },
@@ -25,14 +25,14 @@ const Usuario = sequelize.define(
          allowNull: false,
          unique: true,
          validate: {
-           isEmail: { msg: "Email inválido" },
+           isEmail: { msg: "Email inválido." },
          },
       },
       
       senha: {
          type: DataTypes.STRING,
          allowNull: false,
-         validade: {
+         validate: {
            is: {
              args: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
              msg: "A senha deve ter no mínimo 8 caracteres, com letra maiúscula, minúscula, número e caractere especial.",

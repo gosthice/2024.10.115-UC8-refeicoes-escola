@@ -12,14 +12,14 @@ class UsuarioController {
             })
          };
 
-         const senhaCriptografada = await bcrypt.hash(senha, 10);  // criptografar a senha
+         const senhaCriptografada = await bcrypt.hash(senha, 10);  
          await Usuario.create({ nome, papel, email, senha: senhaCriptografada });
 
          res.status(200).json({ msg: "Usuario cadastrado com sucesso!"});
       } catch (error) {
-         res.status(500).json({msg: 'Erro do servidor. Tente novamente mais tarde!'})
+         res.status(500).json({msg: 'Erro do servidor. Tente novamente mais tarde!', erro: error.message});
       }
-   }
+   };
 
    static async perfil(req, res) {
       try {
@@ -37,9 +37,9 @@ class UsuarioController {
 
          res.status(200).json(Usuario);
       } catch (error) {
-         res.status(500).json({msg: 'Erro do servidor. Tente novamente mais tarde!', erro: error.message})
+         res.status(500).json({msg: 'Erro do servidor. Tente novamente mais tarde!', erro: error.message});
       }
-   }
-}
+   };
+};
 
 module.exports = UsuarioController;

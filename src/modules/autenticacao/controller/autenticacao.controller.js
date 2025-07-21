@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
-dotenv.config();
 const Usuario = require("../../usuario/models/usuario.model");
+
+dotenv.config();
 
 const tempo_acess_token = process.env.TEMPO_ACESS_TOKEN;
 const tempo_refresh_token = process.env.TEMPO_REFRESH_TOKEN;
@@ -30,7 +31,7 @@ class AutenticacaoController {
             });
          }
          const user = await Usuario.findOne({
-            where: { email },
+            where: { email }
          });
          if (!user) {
             return res.status(401).json({ msg: "Usuario não encontrado!" });
