@@ -1,4 +1,5 @@
 class AutorizacaoMiddleware {
+   
    static autorizar (papeisPermitidos) {
       return (req, res, next) => {
          const usuario = req.usuario;

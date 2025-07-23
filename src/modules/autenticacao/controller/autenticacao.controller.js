@@ -30,21 +30,28 @@ class AutenticacaoController {
                msg: "É necessario informar o email e a senha para login"
             });
          }
-         const user = await Usuario.findOne({
+         const usuario = await Usuario.findOne({
             where: { email }
          });
-         if (!user) {
+         if (!usuario) {
             return res.status(401).json({ msg: "Usuario não encontrado!" });
          }
-         const senhaCorreta = await bcrypt.compare(senha, user.senha);
+         const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
          if (!senhaCorreta) {
             return res.status(400).json({ msg: "E-mail ou senha incorreto!" });
          }
          const dadosUsuario = {
-            nome: user.nome, 
-            email: user.email,
-            papel: "usuario",
+            nome: usuario.nome, 
+            email: usuario.email,
+            papel: usuario.papel,   // "usuario"
          };
+
+         // const dadosMerendeira = {
+         //    nome: usuario.nome,
+         //    email: usuario.email,
+         //    papel: "merendeira"
+         // };
+
          // gerando os tokens
          const tokenAcesso = AutenticacaoController.gerarTokenAcesso(dadosUsuario);
          const refreshToken = AutenticacaoController.gerarRefressToken(dadosUsuario);
@@ -52,14 +59,15 @@ class AutenticacaoController {
          res.cookie("refreshToken", refreshToken, {
             httpOnly: false,
             secure: process.env.NODE_ENV,
-            sameStrict: "strict",
+            sameSite: "strict",
             maxAge: 1 * 24, // 1 dia
          });
          res.status(200).json({
             msg: "Usuario logado com sucesso",
             tokenAcesso,
-            nome: user.nome,
-            papel: "usuario",
+            nome: usuario.nome,
+            papel: usuario.papel,
+            email: usuario.email,
          });
       } catch (error) {
          res.status(500).json({
@@ -79,14 +87,14 @@ class AutenticacaoController {
       jwt.verify(
          refreshToken,
          process.env.JWT_REFRESH_SECRET,
-         (erro, user) => {
+         (erro, usuario) => {
             if (erro) {
                return res.status(403).json({ msg: "Refresh Token invalido!" });
             }
             const dadosUsuario = {
-               nome: user.nome,
-               email: user.email,
-               papel: "usuario",
+               nome: usuario.nome,
+               papel: usuario.papel,   // "usuario"
+               email: usuario.email,
             };
             // gerando o novo token
             const novoTokenAcesso = this.gerarTokenAcesso(dadosUsuario);

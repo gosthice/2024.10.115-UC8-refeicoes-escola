@@ -4,16 +4,16 @@ const bcrypt = require('bcrypt'); // removido o js no final
 class UsuarioController {
    static async cadastrar(req, res) {
       try {
-         const { nome, papel, email, senha } = req.body;
+         const { id, nome, papel, email, senha } = req.body;
          
-         if (!nome || !papel || !email || !senha) {
+         if (!id || !nome || !papel || !email || !senha) {
             return res.status(400).json({
                msg: "Todos os campos devem ser preenchidos"
             })
          };
 
          const senhaCriptografada = await bcrypt.hash(senha, 10);  
-         await Usuario.create({ nome, papel, email, senha: senhaCriptografada });
+         await Usuario.create({ id, nome, papel, email, senha: senhaCriptografada });
 
          res.status(200).json({ msg: "Usuario cadastrado com sucesso!"});
       } catch (error) {
@@ -23,9 +23,10 @@ class UsuarioController {
 
    static async perfil(req, res) {
       try {
-         const { email } = req.usuario;
+         // const {email}
+         const { id } = req.usuario;
          const Usuario = await Usuario.findOne({
-            where: {email},
+            where: {id},
             attributes: ['nome', 'papel', 'email']
          });
 
