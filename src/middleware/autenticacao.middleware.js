@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 class AutenticacaoMiddleware {
+   
    static autenticarToken(req, res, next) {
       const authHeader = req.headers["authorization"];
       const token = authHeader && authHeader.split(" ")[1];
@@ -11,14 +12,14 @@ class AutenticacaoMiddleware {
          })
       };
 
-      jwt.verify(token, process.env.SECRET_KEY, (error, user) => {
+      jwt.verify(token, process.env.SECRET_KEY, (error, usuario) => {
          if (error) {
             return res.status(403).json({
                msg: "Token de acesso não fornecido."
             })
          };
 
-         req.user = user;
+         req.usuario = usuario;
          next();
       });
    }

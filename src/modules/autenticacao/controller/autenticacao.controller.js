@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
-const Usuario = require("../../usuario/models/usuario.model");
+const UsuarioModel = require("../../usuario/models/usuario.model");
 
 dotenv.config();
 
@@ -30,7 +30,7 @@ class AutenticacaoController {
                msg: "É necessario informar o email e a senha para login"
             });
          }
-         const usuario = await Usuario.findOne({
+         const usuario = await UsuarioModel.findOne({
             where: { email }
          });
          if (!usuario) {

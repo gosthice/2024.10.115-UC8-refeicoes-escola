@@ -2,14 +2,14 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../../config/configDB');
 
 const Usuario = sequelize.define(
-   "usuario",
+   "Usuario",  // antes: "usuario"
    {
       // testar 
-      id: { 
-         type: DataTypes.INTEGER,
-         primaryKey: true,
-         allowNull: false
-      },
+      // id: { 
+      //    type: DataTypes.INTEGER,
+      //    primaryKey: true,
+      //    allowNull: false
+      // },
       nome: {
          type: DataTypes.STRING,
          allowNull: false,
