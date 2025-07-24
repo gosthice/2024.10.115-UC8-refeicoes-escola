@@ -11,10 +11,10 @@ class AlunoController {
             })
          };
 
-         await Aluno.create({ id, nome, turma });
+         await AlunoModel.create({ id, nome, turma });
          res.status(200).json({ msg: "Aluno cadastrado com sucesso!"});
       } catch (error) {
-         res.status(500).json({msg: 'Erro do servidor. Tente novamente mais tarde!'})
+         res.status(500).json({msg: 'Erro do servidor. Tente novamente mais tarde!', erro: error.message})
       }
    };
 
