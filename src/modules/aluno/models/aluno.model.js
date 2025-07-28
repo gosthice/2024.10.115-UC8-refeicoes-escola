@@ -11,7 +11,7 @@ const Aluno = sequelize.define(
       },
    
       nome: {
-         type: DataTypes.STRING(60),
+         type: DataTypes.STRING(100),
          allowNull: false,
       },
 

@@ -14,7 +14,7 @@ class AlunoController {
          await AlunoModel.create({ id, nome, turma });
          res.status(200).json({ msg: "Aluno cadastrado com sucesso!"});
       } catch (error) {
-         res.status(500).json({msg: 'Erro do servidor. Tente novamente mais tarde!', erro: error.message})
+         res.status(500).json({ msg: 'Erro do servidor. Tente novamente mais tarde!' });
       }
    };
 
@@ -30,46 +30,38 @@ class AlunoController {
 
          res.status(200).json(alunos);
       } catch (error) {
-         resposta.status(500).json({ mensagem: "Erro ao listar o professor selecionado", erro: error.message });
+         res.status(500).json({ msg: "Erro ao listar o aluno selecionado" });
       }
    };
 
    static async listarPorId(req, res) {
       try {
          const id = req.params.id;
-         const aluno = await AlunoModel.findByPk({id});
+         const aluno = await AlunoModel.findByPk(id);
 
-         if(!aluno) {
+         if (!aluno) {
             return res.status(400).json({ msg: 'Aluno não encontrado. Tente novamente!' })
          };
 
          res.status(200).json({aluno});
       } catch (error) {
-         resposta.status(500).json({ mensagem: "Erro ao listar o professor selecionado", erro: error.message });
+         res.status(500).json({ msg: "Erro ao listar o aluno selecionado" });
       }
    };
 
    static async editar(req, res) {
       try {
          const id = req.params.id;
-         const { nome, turma } = req.body;
+         const alunoEditado = await AlunoModel.findByPk(id);
 
-         if(!nome || !turma) {
+         if(!alunoEditado) {
             return res.status(401).json({ msg: 'Os campos devem ser preenchidos corretamente.' })
-         };
+         }
 
-         const alunoEditado = await AlunoModel.update(
-            { nome: nome, turma: turma },
-            { where: {id: id} }
-         );
-
-         if (alunoEditado.length === 0) {
-            return res.status(404).json({ msg: 'Nenhum aluno encontrado. Tente novamente!' })
-         };
-
-         res.status(200).json(alunoEditado);
+         await alunoEditado.update(req.body);
+         res.status(200).json({ msg: "Aluno atualizado com sucesso!", aluno: editarAluno});     
       } catch (error) {
-         resposta.status(500).json({ mensagem: "Erro ao listar o professor selecionado", erro: error.message });
+         res.status(500).json({ msg: "Erro ao listar o aluno selecionado"});
       }
    };
 
@@ -88,7 +80,7 @@ class AlunoController {
 
          res.status(200).json({ msg: 'Aluno excluído com sucesso!' });
       } catch (error) {
-         resposta.status(500).json({ mensagem: "Erro ao listar o professor selecionado", erro: error.message });
+         res.status(500).json({ msg: "Erro ao listar o aluno selecionado", erro: error.message });
       }
    };
 };

@@ -26,7 +26,7 @@ class RefeicaoController {
             });
             res.status(200).json({ msg: "Refeicao criada com sucesso!" });
         } catch (error) {
-            res.status(500).json({msg: 'Erro do servidor. Tente novamente mais tarde!', erro: error.message});
+            res.status(500).json({msg: 'Erro do servidor. Tente novamente mais tarde!' });
         }
     };
 
@@ -102,7 +102,7 @@ class RefeicaoController {
             };
 
             await RefeicaoModel.destroy({
-                where: { alunoI: alunoId }
+                where: { alunoId: alunoId }
             });
 
             res.status(200).json({ msg: 'Refeiçao excluída com sucesso!' });

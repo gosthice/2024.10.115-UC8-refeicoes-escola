@@ -25,7 +25,6 @@ const Refeicao = sequelize.define(
 				isDate: {
 					msg: 'Data inválida.'
 				}
-
 			}
 		},
 
