@@ -1,15 +1,16 @@
 'use strict';
+const bcrypt = require('bcrypt');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
 
-    await queryInterface.bulkInsert('Usuario', [
+    return queryInterface.bulkInsert('usuario', [
       {
         nome: 'Maria Silva',
         papel: 'merendeira',
         email: 'maria.silva@example.com',
-        senha: await hashedPassword('Senha@123'),
+        senha: await bcrypt.hash('Senha@123', 10),
         criado_em: new Date(),
         atualizado_em: new Date(),
       },
@@ -17,7 +18,7 @@ module.exports = {
         nome: 'João Souza',
         papel: 'admin',
         email: 'joao.souza@example.com',
-        senha: await hashedPassword('Joao!2024'),
+        senha: await bcrypt.hash('Joao!2024', 10),
         criado_em: new Date(),
         atualizado_em: new Date(),
       },
@@ -25,7 +26,7 @@ module.exports = {
         nome: 'Ana Lima',
         papel: 'merendeira',
         email: 'ana.lima@example.com',
-        senha: await hashedPassword('Ana@12345'),
+        senha: await bcrypt.hash('Ana@12345', 10),
         criado_em: new Date(),
         atualizado_em: new Date(),
       },
@@ -33,7 +34,7 @@ module.exports = {
         nome: 'Carlos Mendes',
         papel: 'admin',
         email: 'carlos.mendes@example.com',
-        senha: await hashedPassword('Car1os#789'),
+        senha: await bcrypt.hash('Car1os#789', 10),
         criado_em: new Date(),
         atualizado_em: new Date(),
       },
@@ -41,7 +42,7 @@ module.exports = {
         nome: 'Fernanda Rocha',
         papel: 'merendeira',
         email: 'fernanda.rocha@example.com',
-        senha: await hashedPassword('F3rn@nda2025'),
+        senha: await bcrypt.hash('F3rn@nda2025', 10),
         criado_em: new Date(),
         atualizado_em: new Date(),
       },
@@ -50,11 +51,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    await queryInterface.bulkDelete('usuario', null, {});
   }
 };
